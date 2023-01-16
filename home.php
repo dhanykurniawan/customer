@@ -43,7 +43,7 @@ require "koneksi.php";
 </head>
 <body style="background-color: #ececf2;">
     <div class="container col-md-10 mt-4">
-        <h2 class="text-center mb-4">Data Customer PT. PASOKA SUMBER KARYA</h2>
+        <h2 class="text-center mb-4">Data Customer PT.PASOKA SUMBER KARYA</h2>
 
         <div class="col-md-12 mb-2">
             <div class="d-flex justify-content-between mt-4">
@@ -113,7 +113,13 @@ require "koneksi.php";
                             $no_urut = $counts[$kel];
                         ?>
                         <strong>
-                            <?= $cabang; echo "-$kec"; echo "-$kel"; echo "-$no_urut"; ?>
+                            <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kel,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>
                     </td>
                     <td>
@@ -130,7 +136,6 @@ require "koneksi.php";
                             <i class="fa fa-eye"></i>
                             See more
                         </a>
-                        <span> | </span>
                         <a href="hapus_cust.php?id_cust=<?= $id_cust; ?>" class="btn btn-sm btn-danger fw-bold" onclick="return confirm('APAKAH ANDA YAKIN INGIN MENGHAPUS <?= $nama_usaha; ?> DARI SISTEM?')">
                             <i class="fa fa-trash"></i>
                             Delete

@@ -83,7 +83,15 @@ while ($d = mysqli_fetch_array($data)) {
                 <tr>
                     <td class="ps-4 col-md-4"><b>Kode Customer</b></td>
                     <td>
-                        <b><?= $cabang; echo "-$kec"; echo "-$kel"; echo "-$no_urut";  ?></b>
+                        <strong>
+                            <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kel,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
+                        </strong>
                     </td>
                 </tr>
                 <tr>
