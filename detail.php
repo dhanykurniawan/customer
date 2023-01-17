@@ -23,8 +23,8 @@ while ($d = mysqli_fetch_array($data)) {
     $kompetitor = $d['kompetitor'];
     $alm_usaha = $d['alm_usaha'];
     $cabang = $d['cabang'];
+    $kab = $d['kab'];
     $kec = $d['kec'];
-    $kel = $d['kel'];
     $rt = $d['rt'];
     $rw = $d['rw'];
     $pemilik = $d['pemilik'];
@@ -62,7 +62,7 @@ while ($d = mysqli_fetch_array($data)) {
     <!-- Icon -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
-<body>
+<body style="background-color: #ececf2;">
 
     <div class="container col-md-10">
         <h2 class="text-center mt-4"><?= $nama_usaha; ?></h2>
@@ -84,11 +84,11 @@ while ($d = mysqli_fetch_array($data)) {
                     <td class="ps-4 col-md-4"><b>Kode Customer</b></td>
                     <td>
                         <strong>
-                            <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            : <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kab,3,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($kec,3,0,STR_PAD_LEFT);
-                            echo "-";
-                            echo str_pad($kel,3,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>
@@ -96,35 +96,35 @@ while ($d = mysqli_fetch_array($data)) {
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Nama Usaha</td>
-                    <td><?= $nama_usaha; ?></td>
+                    <td>: <?= $nama_usaha; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Jenis Usaha</td>
-                    <td><?= $jenis_usaha; ?></td>
+                    <td>: <?= $jenis_usaha; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Lama Usaha</td>
-                    <td><?= $lama_usaha; ?></td>
+                    <td>: <?= $lama_usaha; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Kepemilikan Tempat Usaha</td>
-                    <td><?= $tempat_usaha; ?></td>
+                    <td>: <?= $tempat_usaha; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">NPWP</td>
-                    <td><?= $npwp; ?></td>
+                    <td>: <?= $npwp; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">No. Telp</td>
-                    <td><?= $telp; ?></td>
+                    <td>: <?= $telp; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Omzet Rata-rata per Bulan</td>
-                    <td><?= $omzet; ?></td>
+                    <td>: <?= number_format($omzet, 2, ",", "."); ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Kompetitor</td>
-                    <td><?= $kompetitor; ?></td>
+                    <td>: <?= $kompetitor; ?></td>
                 </tr>
             </table>
 
@@ -134,13 +134,13 @@ while ($d = mysqli_fetch_array($data)) {
                 while ($d = mysqli_fetch_array($data)) {
                     $cabang = $d['nama_cabang'];
                 }
+                $data = mysqli_query($koneksi, "SELECT * FROM kab WHERE id_kab='$kab'");
+                while ($d = mysqli_fetch_array($data)) {
+                    $kab = $d['nama_kab'];
+                }
                 $data = mysqli_query($koneksi, "SELECT * FROM kec WHERE id_kec='$kec'");
                 while ($d = mysqli_fetch_array($data)) {
                     $kec = $d['nama_kec'];
-                }
-                $data = mysqli_query($koneksi, "SELECT * FROM kel WHERE id_kel='$kel'");
-                while ($d = mysqli_fetch_array($data)) {
-                    $kel = $d['nama_kel'];
                 }
             ?>
             <table class="table table-responsive mt-4 bg-light">
@@ -149,27 +149,27 @@ while ($d = mysqli_fetch_array($data)) {
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Alamat Usaha</td>
-                    <td><?= $alm_usaha; ?></td>
+                    <td>: <?= $alm_usaha; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Cabang</td>
-                    <td><?= $cabang; ?></td>
+                    <td>: <?= $cabang; ?></td>
+                </tr>
+                <tr>
+                    <td class="ps-4 col-md-4">Kabupaten / Kota</td>
+                    <td>: <?= $kab; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Kecamatan</td>
-                    <td><?= $kec; ?></td>
-                </tr>
-                <tr>
-                    <td class="ps-4 col-md-4">Kelurahan</td>
-                    <td><?= $kel; ?></td>
+                    <td>: <?= $kec; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">RT</td>
-                    <td><?= $rt; ?></td>
+                    <td>: <?= $rt; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">RW</td>
-                    <td><?= $rw; ?></td>
+                    <td>: <?= $rw; ?></td>
                 </tr>
             </table>
 
@@ -181,23 +181,23 @@ while ($d = mysqli_fetch_array($data)) {
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">Nama Pemilik Usaha</td>
-                    <td><?= $pemilik; ?></td>
+                    <td>: <?= $pemilik; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">NIK</td>
-                    <td><?= $nik; ?></td>
+                    <td>: <?= $nik; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">No. HP Pemilik</td>
-                    <td><?= $hp_pemilik; ?></td>
+                    <td>: <?= $hp_pemilik; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">PIC</td>
-                    <td><?= $pic; ?></td>
+                    <td>: <?= $pic; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">No. HP PIC</td>
-                    <td><?= $hp_pic; ?></td>
+                    <td>: <?= $hp_pic; ?></td>
                 </tr>
             </table>
         </div>

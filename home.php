@@ -26,9 +26,6 @@ require "koneksi.php";
     <!-- Menyisipkan JQuery dan Javascript Bootstrap -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Style -->
-    <!-- <link rel="stylesheet" href="style.css"> -->
-
     <!-- Icon -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
@@ -89,15 +86,15 @@ require "koneksi.php";
             <tbody class="bg-light">
                 <?php
                 $no = 1;
-                $index_kel = array();
+                $index_kec = array();
 
                 $data = mysqli_query($koneksi, "SELECT * FROM customer");
                 while ($d = mysqli_fetch_array($data)) {
                     $id_cust = $d['id_cust'];
                     $nama_usaha = $d['nama_usaha'];
                     $cabang = $d['cabang'];
+                    $kab = $d['kab'];
                     $kec = $d['kec'];
-                    $kel = $d['kel'];
                     $pemilik = $d['pemilik'];
                     $hp_pemilik = $d['hp_pemilik'];
                     $nomor = $no++;
@@ -108,16 +105,16 @@ require "koneksi.php";
                     </td>
                     <td>
                         <?php
-                            array_push($index_kel, $kel);
-                            $counts = array_count_values($index_kel);
-                            $no_urut = $counts[$kel];
+                            array_push($index_kec, $kec);
+                            $counts = array_count_values($index_kec);
+                            $no_urut = $counts[$kec];
                         ?>
                         <strong>
                             <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
                             echo "-";
-                            echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo str_pad($kab,3,0,STR_PAD_LEFT);
                             echo "-";
-                            echo str_pad($kel,3,0,STR_PAD_LEFT);
+                            echo str_pad($kec,3,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>

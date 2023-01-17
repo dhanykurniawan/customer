@@ -29,8 +29,8 @@ while ($d = mysqli_fetch_array($data)) {
     $kompetitor = $d['kompetitor'];
     $alm_usaha = $d['alm_usaha'];
     $cabang = $d['cabang'];
+    $kabs = $d['kab'];
     $kecm = $d['kec'];
-    $kelr = $d['kel'];
     $rt = $d['rt'];
     $rw = $d['rw'];
     $pemilik = $d['pemilik'];
@@ -43,10 +43,16 @@ while ($d = mysqli_fetch_array($data)) {
 
 $posisi = 0;
 $cbg = 0;
+$kab = 0;
 $kec = 0;
 if (isset($_GET['cbg'])) {
     $cbg = $_GET['cbg'];
     $posisi = "cbg";
+}
+if (isset($_GET['kab'])) {
+    echo $kab;
+    $kab = $_GET['kab'];
+    $posisi = "kab";
 }
 if (isset($_GET['kec'])) {
     echo $kec;
@@ -132,9 +138,9 @@ if (isset($_GET['kec'])) {
                         </div>
 
                         <div class="form-group mt-3">
-                            <label>Kecamatan</label>
-                            <select onchange="getValueKec()" name="kec" id="kec" class="form-control form-control-sm">
-                                <option value="">--- PILIH KECAMATAN ---</option>
+                            <label>Kabupaten / Kota</label>
+                            <select onchange="getValueKab()" name="kab" id="kab" class="form-control form-control-sm">
+                                <option value="">--- PILIH KABUPATEN / KOTA ---</option>
                                 <?php
                                 if(isset($_GET['cbg'])){
                                     $indexcabang = $_GET['cbg'];
@@ -142,58 +148,60 @@ if (isset($_GET['kec'])) {
                                     $indexcabang = $cabang;
                                 }
 
-                                if(isset($_GET['kec'])){
-                                    $indexkec = $_GET['kec'];
+                                if(isset($_GET['kab'])){
+                                    $indexkab = $_GET['kab'];
                                 } else {
-                                    $indexkec = $kecm;
+                                    $indexkab = $kabs;
                                 }
 
-                                $data = mysqli_query($koneksi, "SELECT * FROM kec WHERE id_cabang=$indexcabang");
+                                $data = mysqli_query($koneksi, "SELECT * FROM kab WHERE id_cabang=$indexcabang");
                                 while ($d = mysqli_fetch_array($data)) {
-                                    $id_kec = $d['id_kec'];
-                                    $nama_kec = $d['nama_kec'];
+                                    $id_kab = $d['id_kab'];
+                                    $nama_kab = $d['nama_kab'];
                                     $id_cabang = $d['id_cabang'];
                                 ?>
-                                <option value="<?= $id_kec; ?>" <?php if ($indexkec == $id_kec) {echo "selected";} ?>><?= $nama_kec; ?></option>
+                                <option value="<?= $id_kab; ?>" <?php if ($indexkab == $id_kab) {echo "selected";} ?>><?= $nama_kab; ?></option>
                                 
                                 <?php } ?>
                             </select>
 
                             <script>
-                                function getValueKec(){
-                                    b = document.getElementById("kec").value;
+                                function getValueKab(){
+                                    b = document.getElementById("kab").value;
                                     if (b=="") {
                                         return 0;
                                     }
-                                    window.location.href = "?id_cust=" + <?=$id_cust?> + "&cbg=" + <?=$indexcabang?> + "&kec=" + b;
+                                    window.location.href = "?id_cust=" + <?=$id_cust?> + "&cbg=" + <?=$indexcabang?> + "&kab=" + b;
                                 }
                             </script>
                         </div>
 
+
+
                         <div class="form-group mt-3">
-                            <label>Kelurahan</label>
-                            <select name="kel" id="kel" class="form-control form-control-sm">
-                                <option value="">--- PILIH KELURAHAN ---</option>
+                            <label>Kecamatan</label>
+                            <select name="kec" id="kec" class="form-control form-control-sm">
+                                <option value="">--- PILIH KECAMATAN ---</option>
                                 <?php
 
                                 if(isset($_GET['cbg'])){
-                                    $kelr="";
+                                    $kecm="";
                                 }
 
-                                if(isset($_GET['kec'])){
-                                    $indexkec = $_GET['kec'];
+                                if(isset($_GET['kab'])){
+                                    $indexkab = $_GET['kab'];
                                 } else {
-                                    $indexkec = $kecm;
+                                    $indexkab = $kabs;
                                 }
                                 
 
-                                $data = mysqli_query($koneksi, "SELECT * FROM kel WHERE id_kec=$indexkec");
+                                $data = mysqli_query($koneksi, "SELECT * FROM kec WHERE id_kab=$indexkab");
                                 while ($d = mysqli_fetch_array($data)) {
-                                    $id_kel = $d['id_kel'];
-                                    $nama_kel = $d['nama_kel'];
                                     $id_kec = $d['id_kec'];
+                                    $nama_kec = $d['nama_kec'];
+                                    $id_kab = $d['id_kab'];
                                 ?>
-                                <option value="<?= $id_kel; ?>" <?php if ($kelr == $id_kel) {echo "selected";} ?>><?= $nama_kel; ?></option>
+                                <option value="<?= $id_kec; ?>" <?php if ($kecm == $id_kec) {echo "selected";} ?>><?= $nama_kec; ?></option>
                                 <?php } ?>
                             </select>
                             
@@ -338,12 +346,13 @@ if (isset($_GET['kec'])) {
     } elseif ($posisi=="cbg") { ?>
 
         <script>
-            document.getElementById("cabang").focus();
+            document.getElementById("kab").focus();
         </script>
 
-    <?php } elseif ($posisi=="kec") { ?>
+    <?php } elseif ($posisi=="kab") { ?>
         <script>
             document.getElementById("kec").focus();
         </script>
     <?php } ?>
+
 </html>

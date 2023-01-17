@@ -20,6 +20,12 @@ require "koneksi.php";
 
     <!-- Icon -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <style>
+        .shadow:hover {
+        background-color: #ececff;
+        }
+    </style>
 </head>
 <body style="min-height: 100%; background-color: #ececff;">
     <?php
@@ -60,10 +66,10 @@ require "koneksi.php";
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-light text-center">
                 <?php
                 $no = 1;
-                $index_kel = array();
+                $index_kec = array();
                 
                 $data = "SELECT * FROM customer WHERE nama_usaha LIKE '%$keyword%' ";
                 $result = mysqli_query($koneksi, $data);
@@ -71,24 +77,30 @@ require "koneksi.php";
                         $id_cust = $d['id_cust'];
                         $nama_usaha = $d['nama_usaha'];
                         $cabang = $d['cabang'];
+                        $kab = $d['kab'];
                         $kec = $d['kec'];
-                        $kel = $d['kel'];
                         $pemilik = $d['pemilik'];
                         $hp_pemilik = $d['hp_pemilik'];
                         $nomor = $no++;
                 ?>
-                <tr class="text-center bg-light shadow">
+                <tr class="shadow">
                     <td>
                         <?= $nomor; ?>
                     </td>
                     <td>
                         <?php
-                            array_push($index_kel, $kel);
-                            $counts = array_count_values($index_kel);
-                            $no_urut = $counts[$kel];
+                            array_push($index_kec, $kec);
+                            $counts = array_count_values($index_kec);
+                            $no_urut = $counts[$kec];
                         ?>
                         <strong>
-                            <?= $cabang; echo "-$kec"; echo "-$kel"; echo "-$no_urut"; ?>
+                            <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kab,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>
                     </td>
                     <td>
@@ -105,7 +117,6 @@ require "koneksi.php";
                             <i class="fa fa-eye"></i>
                             See more
                         </a>
-                        <span> | </span>
                         <a href="hapus_cust.php?id_cust=<?= $id_cust; ?>" class="btn btn-sm btn-danger d-inline-block" onclick="return confirm('APAKAH ANDA YAKIN INGIN MENGHAPUS <?= $nama_usaha; ?> DARI SISTEM?')">
                             <i class="fa fa-trash"></i>
                             Delete
