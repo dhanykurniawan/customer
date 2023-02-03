@@ -17,6 +17,7 @@ function tambah_cust($data) {
     $cabang = htmlspecialchars($data['cabang']);
     $kab = htmlspecialchars($data['kab']);
     $kec = htmlspecialchars($data['kec']);
+    $kel = htmlspecialchars($data['kel']);
     $rt = htmlspecialchars($data['rt']);
     $rw = htmlspecialchars($data['rw']);
     $pemilik = htmlspecialchars($data['pemilik']);
@@ -26,8 +27,8 @@ function tambah_cust($data) {
     $hp_pic = htmlspecialchars($data['hp_pic']);
     
     
-    $sql = "INSERT INTO customer (nama_usaha, jenis_usaha, lama_usaha, tempat_usaha, npwp, telp, omzet, kompetitor, alm_usaha, cabang, kab, kec, rt, rw, pemilik, nik, hp_pemilik, pic, hp_pic)
-    VALUES ('$nama_usaha', '$jenis_usaha', '$lama_usaha', '$tempat_usaha', '$npwp', '$telp', '$omzet', '$kompetitor', '$alm_usaha', '$cabang', '$kab', '$kec', '$rt', '$rw', '$pemilik', '$nik', '$hp_pemilik', '$pic', '$hp_pic')";
+    $sql = "INSERT INTO customer (nama_usaha, jenis_usaha, lama_usaha, tempat_usaha, npwp, telp, omzet, kompetitor, alm_usaha, cabang, kab, kec, kel, rt, rw, pemilik, nik, hp_pemilik, pic, hp_pic)
+    VALUES ('$nama_usaha', '$jenis_usaha', '$lama_usaha', '$tempat_usaha', '$npwp', '$telp', '$omzet', '$kompetitor', '$alm_usaha', '$cabang', '$kab', '$kec', '$kel', '$rt', '$rw', '$pemilik', '$nik', '$hp_pemilik', '$pic', '$hp_pic')";
 
     if (mysqli_query($koneksi, $sql)) {
         echo '<script type="text/javascript">'; 
@@ -64,6 +65,7 @@ function edit_cust($data) {
     $cabang = htmlspecialchars($data['cabang']);
     $kab = htmlspecialchars($data['kab']);
     $kec = htmlspecialchars($data['kec']);
+    $kel = htmlspecialchars($data['kel']);
     $rt = htmlspecialchars($data['rt']);
     $rw = htmlspecialchars($data['rw']);
     $pemilik = htmlspecialchars($data['pemilik']);
@@ -84,6 +86,7 @@ function edit_cust($data) {
                                 cabang = '$cabang',
                                 kab = '$kab',
                                 kec = '$kec',
+                                kel = '$kel',
                                 rt = '$rt',
                                 rw = '$rw',
                                 pemilik = '$pemilik',

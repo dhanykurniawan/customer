@@ -33,6 +33,11 @@ if (isset($_GET['kec'])) {
     $kec = $_GET['kec'];
     $posisi = "kec";
 }
+if (isset($_GET['kel'])) {
+    echo $kel;
+    $kel = $_GET['kel'];
+    $posisi = "kel";
+}
 
 
 
@@ -56,6 +61,9 @@ if (isset($_GET['kec'])) {
 
     <!-- Icon -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body style="background-color: #ececf2;">
     
@@ -63,11 +71,8 @@ if (isset($_GET['kec'])) {
 
     <div class="container col-md-9 mt-4">
 
-        <a href="home.php" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-            </svg>
+        <a href="home.php" class="btn btn-sm btn-primary">
+            <i class="fa fa-home"></i>
             Back to Home
         </a>
 
@@ -75,12 +80,13 @@ if (isset($_GET['kec'])) {
             <form action="" method="post">
                 
                 <!-- Alamat Usaha -->
-                <div class="card mt-3">
+                <div class="card mt-2">
                     <div class="card-header bg-primary text-white fw-bold">
                         Lokasi Usaha
                     </div>
                     
                     <div class="card-body">
+                        <!-- Cabang -->
                         <div class="form-group mt-3">
                             <label>Cabang</label>
                             <select onchange="getValueCabang()" name="cabang" id="cabang" class="form-control form-control-sm" required>
@@ -99,13 +105,14 @@ if (isset($_GET['kec'])) {
                                 function getValueCabang() {
                                     a = document.getElementById("cabang").value;
                                     if (a=="") {
-                                        return 0;
+                                        return "";
                                     }
                                     window.location.href = "?cbg=" + a;
                                 }
                             </script>
                         </div>
 
+                        <!-- Kabupaten/Kota -->
                         <div class="form-group mt-3">
                             <label>Kabupaten / Kota</label>
                             <select onchange="getValueKab()" name="kab" id="kab" class="form-control form-control-sm" required>
@@ -125,16 +132,17 @@ if (isset($_GET['kec'])) {
                                 function getValueKab(){
                                     b = document.getElementById("kab").value;
                                     if (b=="") {
-                                        return 0;
+                                        return "";
                                     }
                                     window.location.href = "?cbg=" + <?=$cbg?> + "&kab=" + b;
                                 }
                             </script>
                         </div>
 
+                        <!-- Kecamatan -->
                         <div class="form-group mt-3">
                             <label>Kecamatan</label>
-                            <select name="kec" id="kec" class="form-control form-control-sm" required>
+                            <select onchange="getValueKec()" name="kec" id="kec" class="form-control form-control-sm" required>
                                 <option value="">--- PILIH KECAMATAN ---</option>
                                 <?php
                                 $data = mysqli_query($koneksi, "SELECT * FROM kec WHERE id_kab=$kab");
@@ -143,7 +151,34 @@ if (isset($_GET['kec'])) {
                                     $nama_kec = $d['nama_kec'];
                                     $id_kab = $d['id_kab'];
                                 ?>
-                                <option value="<?= $id_kec; ?>"><?= $nama_kec; ?></option>
+                                <option value="<?= $id_kec; ?>" <?php if ($kec == $id_kec) {echo "selected";} ?>><?= $nama_kec; ?></option>
+                                <?php } ?>
+                            </select>
+
+                            <script>
+                                function getValueKec(){
+                                    c = document.getElementById("kec").value;
+                                    if (c=="") {
+                                        return "";
+                                    }
+                                    window.location.href = "?cbg=" + <?=$cbg?> + "&kab=" + <?=$kab?> + "&kec=" + c ;
+                                }
+                            </script>
+                        </div>
+
+                        <!-- Kelurahan -->
+                        <div class="form-group mt-3">
+                            <label>Kelurahan</label>
+                            <select name="kel" id="kel" class="form-control form-control-sm" required>
+                                <option value="">--- PILIH KELURAHAN ---</option>
+                                <?php
+                                $data = mysqli_query($koneksi, "SELECT id_kel, UPPER(nama_kel) AS nama_kel, id_kec FROM kel WHERE id_kec=$kec");
+                                while ($d = mysqli_fetch_array($data)) {
+                                    $id_kel = $d['id_kel'];
+                                    $nama_kel = $d['nama_kel'];
+                                    $id_kec = $d['id_kec'];
+                                ?>
+                                <option value="<?= $id_kel; ?>"><?= $nama_kel; ?></option>
                                 <?php } ?>
                             </select>
                             
@@ -291,6 +326,10 @@ if (isset($_GET['kec'])) {
     <?php } elseif ($posisi=="kab") { ?>
         <script>
             document.getElementById("kec").focus();
+        </script>
+    <?php } elseif ($posisi=="kec") { ?>
+        <script>
+            document.getElementById("kel").focus();
         </script>
     <?php } ?>
     

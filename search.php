@@ -69,7 +69,7 @@ require "koneksi.php";
             <tbody class="bg-light text-center">
                 <?php
                 $no = 1;
-                $index_kec = array();
+                $index_kel = array();
                 
                 $data = "SELECT * FROM customer WHERE nama_usaha LIKE '%$keyword%' ";
                 $result = mysqli_query($koneksi, $data);
@@ -79,6 +79,7 @@ require "koneksi.php";
                         $cabang = $d['cabang'];
                         $kab = $d['kab'];
                         $kec = $d['kec'];
+                        $kel = $d['kel'];
                         $pemilik = $d['pemilik'];
                         $hp_pemilik = $d['hp_pemilik'];
                         $nomor = $no++;
@@ -89,16 +90,18 @@ require "koneksi.php";
                     </td>
                     <td>
                         <?php
-                            array_push($index_kec, $kec);
-                            $counts = array_count_values($index_kec);
-                            $no_urut = $counts[$kec];
+                            array_push($index_kel, $kel);
+                            $counts = array_count_values($index_kel);
+                            $no_urut = $counts[$kel];
                         ?>
                         <strong>
-                            <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                            <?=  str_pad($cabang,1,0,STR_PAD_LEFT);
                             echo "-";
-                            echo str_pad($kab,3,0,STR_PAD_LEFT);
+                            echo str_pad($kab,2,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kel,4,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>
@@ -113,7 +116,7 @@ require "koneksi.php";
                     <?= $hp_pemilik; ?>
                     </td>
                     <td class="ps-0 pe-0">
-                        <a href="detail.php?id_cust=<?= $id_cust; ?>&nourut=<?= $no_urut ?>" class="btn btn-sm btn-success d-inline-block mr-1">
+                        <a href="detail.php?id_cust=<?= $id_cust; ?>" class="btn btn-sm btn-success d-inline-block mr-1">
                             <i class="fa fa-eye"></i>
                             See more
                         </a>

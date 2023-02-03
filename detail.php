@@ -8,9 +8,8 @@ if (!isset($_SESSION['username'])) {
 require "koneksi.php";
 
 $id_cust = $_GET['id_cust'];
-$no_urut = $_GET['nourut'];
 
-$data = mysqli_query($koneksi, "SELECT * FROM customer WHERE id_cust='$id_cust'");
+$data = mysqli_query($koneksi, "SELECT id_cust, nama_usaha, jenis_usaha, lama_usaha, tempat_usaha, npwp, telp, omzet, kompetitor, alm_usaha, cabang, kab, kec, UPPER(kel) AS kel, rt, rw, pemilik, nik, hp_pemilik, pic, hp_pic FROM customer WHERE id_cust='$id_cust'");
 while ($d = mysqli_fetch_array($data)) {
     $id_cust = $d['id_cust'];
     $nama_usaha = $d['nama_usaha'];
@@ -25,6 +24,7 @@ while ($d = mysqli_fetch_array($data)) {
     $cabang = $d['cabang'];
     $kab = $d['kab'];
     $kec = $d['kec'];
+    $kel = $d['kel'];
     $rt = $d['rt'];
     $rw = $d['rw'];
     $pemilik = $d['pemilik'];
@@ -33,7 +33,6 @@ while ($d = mysqli_fetch_array($data)) {
     $pic = $d['pic'];
     $hp_pic = $d['hp_pic'];
 }
-
 ?>
 
 
@@ -68,7 +67,7 @@ while ($d = mysqli_fetch_array($data)) {
         <h2 class="text-center mt-4"><?= $nama_usaha; ?></h2>
 
         <div class="d-flex justify-content-between mt-4">
-            <a href="home.php" class="btn btn-primary">
+            <a href="home.php" class="btn btn-sm btn-primary">
                 <i class="fa fa-home"></i>
                 Back to Home
             </a>
@@ -80,20 +79,44 @@ while ($d = mysqli_fetch_array($data)) {
                 <tr>
                     <td class="bg-primary text-light" colspan="2"><h3>INFO USAHA</h3></td>
                 </tr>
+                <?php
+                $no = 1;
+                $index_kel = array();
+
+                $data = mysqli_query($koneksi, "SELECT * FROM customer");
+                while ($d = mysqli_fetch_array($data)) {
+                    $id_cust = $d['id_cust'];
+                    $nama_usaha = $d['nama_usaha'];
+                    $cabang = $d['cabang'];
+                    $kab = $d['kab'];
+                    $kec = $d['kec'];
+                    $kel = $d['kel'];
+                    $pemilik = $d['pemilik'];
+                    $hp_pemilik = $d['hp_pemilik'];
+                    $nomor = $no++;
+                } ?>
                 <tr>
                     <td class="ps-4 col-md-4"><b>Kode Customer</b></td>
                     <td>
-                        <strong>
-                            : <?=  str_pad($cabang,2,0,STR_PAD_LEFT);
+                        <?php
+                            array_push($index_kel, $kel);
+                            $counts = array_count_values($index_kel);
+                            $no_urut = $counts[$kel];
+                        ?>
+                        <strong>: 
+                            <?=  str_pad($cabang,1,0,STR_PAD_LEFT);
                             echo "-";
-                            echo str_pad($kab,3,0,STR_PAD_LEFT);
+                            echo str_pad($kab,2,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($kec,3,0,STR_PAD_LEFT);
+                            echo "-";
+                            echo str_pad($kel,4,0,STR_PAD_LEFT);
                             echo "-";
                             echo str_pad($no_urut,2,0,STR_PAD_LEFT); ?>
                         </strong>
                     </td>
                 </tr>
+                
                 <tr>
                     <td class="ps-4 col-md-4">Nama Usaha</td>
                     <td>: <?= $nama_usaha; ?></td>
@@ -142,6 +165,10 @@ while ($d = mysqli_fetch_array($data)) {
                 while ($d = mysqli_fetch_array($data)) {
                     $kec = $d['nama_kec'];
                 }
+                $data = mysqli_query($koneksi, "SELECT UPPER(nama_kel) AS nama_kel FROM kel WHERE id_kel='$kel'");
+                while ($d = mysqli_fetch_array($data)) {
+                    $kel = $d['nama_kel'];
+                }
             ?>
             <table class="table table-responsive mt-4 bg-light">
                 <tr>
@@ -162,6 +189,10 @@ while ($d = mysqli_fetch_array($data)) {
                 <tr>
                     <td class="ps-4 col-md-4">Kecamatan</td>
                     <td>: <?= $kec; ?></td>
+                </tr>
+                <tr>
+                    <td class="ps-4 col-md-4">Kelurahan</td>
+                    <td>: <?= $kel; ?></td>
                 </tr>
                 <tr>
                     <td class="ps-4 col-md-4">RT</td>

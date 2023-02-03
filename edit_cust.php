@@ -31,6 +31,7 @@ while ($d = mysqli_fetch_array($data)) {
     $cabang = $d['cabang'];
     $kabs = $d['kab'];
     $kecm = $d['kec'];
+    $kelr = $d['kel'];
     $rt = $d['rt'];
     $rw = $d['rw'];
     $pemilik = $d['pemilik'];
@@ -45,6 +46,7 @@ $posisi = 0;
 $cbg = 0;
 $kab = 0;
 $kec = 0;
+$kel = 0;
 if (isset($_GET['cbg'])) {
     $cbg = $_GET['cbg'];
     $posisi = "cbg";
@@ -58,6 +60,11 @@ if (isset($_GET['kec'])) {
     echo $kec;
     $kec = $_GET['kec'];
     $posisi = "kec";
+}
+if (isset($_GET['kel'])) {
+    echo $kel;
+    $kel = $_GET['kel'];
+    $posisi = "kel";
 }
 
 
@@ -83,27 +90,28 @@ if (isset($_GET['kec'])) {
     <!-- Icon -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
-<body>
+<body style="background-color: #ececf2;">
     
     <h2 class="text-center mt-4">Form Edit Data Customer</h2>
 
     <div class="container col-md-9 mt-4">
 
-        <a href="home.php" class="btn btn-primary">
+        <a href="detail.php?id_cust=<?= $id_cust ?>" class="btn btn-sm btn-primary">
             <i class="fa fa-home"></i>
-            Back to Home
+            Back
         </a>
 
         
             <form action="" method="post">
                 
                 <!-- Alamat Usaha -->
-                <div class="card mt-3">
+                <div class="card mt-2">
                     <div class="card-header bg-primary text-white fw-bold">
                         Lokasi Usaha
                     </div>
                     
                     <div class="card-body">
+                        <!-- Cabang -->
                         <div class="form-group mt-3">
                             <label>Cabang</label>
                             <input type="hidden" name="id_cust" id="id_cust">
@@ -125,11 +133,9 @@ if (isset($_GET['kec'])) {
                             
                             <script>
                                 function getValueCabang() {
-                                    
                                     a = document.getElementById("cabang").value;
-                                    
                                     if (a=="") {
-                                        return 0;
+                                        return "";
                                     }
                                     
                                     window.location.href = "?id_cust=" + <?=$id_cust?> + "&cbg=" + a;
@@ -137,6 +143,7 @@ if (isset($_GET['kec'])) {
                             </script>
                         </div>
 
+                        <!-- Kabupaten/Kota -->
                         <div class="form-group mt-3">
                             <label>Kabupaten / Kota</label>
                             <select onchange="getValueKab()" name="kab" id="kab" class="form-control form-control-sm">
@@ -169,23 +176,24 @@ if (isset($_GET['kec'])) {
                                 function getValueKab(){
                                     b = document.getElementById("kab").value;
                                     if (b=="") {
-                                        return 0;
+                                        return "";
                                     }
                                     window.location.href = "?id_cust=" + <?=$id_cust?> + "&cbg=" + <?=$indexcabang?> + "&kab=" + b;
                                 }
                             </script>
                         </div>
 
-
-
+                        <!-- Kecamatan -->
                         <div class="form-group mt-3">
                             <label>Kecamatan</label>
-                            <select name="kec" id="kec" class="form-control form-control-sm">
+                            <select onchange="getValueKec()" name="kec" id="kec" class="form-control form-control-sm">
                                 <option value="">--- PILIH KECAMATAN ---</option>
                                 <?php
-
                                 if(isset($_GET['cbg'])){
+                                    // $indexcabang = $_GET['cbg'];
                                     $kecm="";
+                                } else {
+                                    $indexcabang = $cabang;
                                 }
 
                                 if(isset($_GET['kab'])){
@@ -193,7 +201,12 @@ if (isset($_GET['kec'])) {
                                 } else {
                                     $indexkab = $kabs;
                                 }
-                                
+
+                                if(isset($_GET['kec'])){
+                                    $indexkec = $_GET['kec'];
+                                } else {
+                                    $indexkec = $kecm;
+                                }
 
                                 $data = mysqli_query($koneksi, "SELECT * FROM kec WHERE id_kab=$indexkab");
                                 while ($d = mysqli_fetch_array($data)) {
@@ -201,7 +214,53 @@ if (isset($_GET['kec'])) {
                                     $nama_kec = $d['nama_kec'];
                                     $id_kab = $d['id_kab'];
                                 ?>
-                                <option value="<?= $id_kec; ?>" <?php if ($kecm == $id_kec) {echo "selected";} ?>><?= $nama_kec; ?></option>
+                                <option value="<?= $id_kec; ?>" <?php if ($indexkec == $id_kec) {echo "selected";} ?>><?= $nama_kec; ?></option>
+                                
+                                <?php } ?>
+                            </select>
+
+                            <script>
+                                function getValueKec(){
+                                    c = document.getElementById("kec").value;
+                                    if (c=="") {
+                                        return "";
+                                    }
+                                    window.location.href = "?id_cust=" + <?=$id_cust?> + "&cbg=" + <?=$indexcabang?> + "&kab=" + <?=$indexkab?> + "&kec=" + c ;
+                                }
+                            </script>
+                        </div>
+
+                        <!-- Kelurahan -->
+                        <div class="form-group mt-3">
+                            <label>Kelurahan</label>
+                            <select name="kel" id="kel" class="form-control form-control-sm">
+                                <option value="">--- PILIH KELURAHAN ---</option>
+                                <?php
+
+                                if(isset($_GET['cbg'])){
+                                    $kelr="";
+                                }
+
+                                if(isset($_GET['kab'])){
+                                    $indexkab = $_GET['kab'];
+                                } else {
+                                    $indexkab = $kabs;
+                                }
+
+                                if(isset($_GET['kec'])){
+                                    $indexkec = $_GET['kec'];
+                                } else {
+                                    $indexkec = $kecm;
+                                }
+                                
+
+                                $data = mysqli_query($koneksi, "SELECT id_kel, UPPER(nama_kel) AS nama_kel, id_kec FROM kel WHERE id_kec=$indexkec");
+                                while ($d = mysqli_fetch_array($data)) {
+                                    $id_kel = $d['id_kel'];
+                                    $nama_kel = $d['nama_kel'];
+                                    $id_kec = $d['id_kec'];
+                                ?>
+                                <option value="<?= $id_kel; ?>" <?php if ($kelr == $id_kel) {echo "selected";} ?>><?= $nama_kel; ?></option>
                                 <?php } ?>
                             </select>
                             
@@ -319,7 +378,7 @@ if (isset($_GET['kec'])) {
 
                 <!-- Button Simpan -->
                 <!-- <div class="card mt-3"> -->
-                    <button type="submit" class="container col-md-12 btn btn-primary mt-4" name="submit" value="simpan">
+                    <button type="submit" class="container col-md-12 btn btn-primary mt-2" name="submit" value="simpan">
                         <i class="fa fa-save"></i>
                         Simpan Perubahan
                     </button>
@@ -352,6 +411,10 @@ if (isset($_GET['kec'])) {
     <?php } elseif ($posisi=="kab") { ?>
         <script>
             document.getElementById("kec").focus();
+        </script>
+    <?php } elseif ($posisi=="kec") { ?>
+        <script>
+            document.getElementById("kel").focus();
         </script>
     <?php } ?>
 
